@@ -42,6 +42,16 @@ rosbuild_add_executable(appearance_check  ros/src/appearance_check.cpp)
 
 #rosbuild_add_compile_flags(dirt_detection -D__LINUX__)
 
+
+include_directories(${PCL_INCLUDE_DIRS})
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_DEFINITIONS})
+
+rosbuild_add_executable(rgbd_recording ros/src/rgbd_recording.cpp)
+target_link_libraries(rgbd_recording ${PCL_LIBRARIES})
+
+
+
 #common commands for building c++ executables and libraries
 #rosbuild_add_library(${PROJECT_NAME} src/example.cpp)
 #target_link_libraries(${PROJECT_NAME} another_library)

@@ -171,7 +171,7 @@ class InitAutoPnPScenario(smach.State):
 		
 	def execute(self, userdata):
 		sf = ScreenFormat("InitAutoPnPScenario")
-
+		raw_input('bla')
 		#todo: set acceleration
 		# adjust base footprint
 #		self.local_costmap_dynamic_reconfigure_client.update_configuration({"footprint": "[[0.45,0.25],[0.45,-0.25],[0.25,-0.45],[-0.25,-0.45],[-0.45,-0.25],[-0.45,0.25],[-0.25,0.45],[0.25,0.45]]"})
