@@ -24,6 +24,8 @@ rosbuild_genmsg()
 #uncomment if you have defined services
 rosbuild_gensrv()
 
+find_package(PCL 1.2 REQUIRED)
+
 #add dynamic reconfigure api
 rosbuild_find_ros_package(dynamic_reconfigure)
 include(${dynamic_reconfigure_PACKAGE_PATH}/cmake/cfgbuild.cmake)
@@ -31,14 +33,19 @@ gencfg()
 
 rosbuild_add_boost_directories()
 
-rosbuild_add_executable(dirt_detection  ros/src/dirt_detection.cpp
-										common/src/timer.cpp
-										ros/src/label_box.cpp)
-rosbuild_link_boost(dirt_detection filesystem system)
+#rosbuild_add_executable(dirt_detection  ros/src/dirt_detection.cpp
+#										common/src/timer.cpp
+#										ros/src/label_box.cpp)
+#rosbuild_link_boost(dirt_detection filesystem system)
 
 rosbuild_add_executable(dirt_detection_client  ros/src/dirt_detection_client_main.cpp)
 
 rosbuild_add_executable(appearance_check  ros/src/appearance_check.cpp)
+
+rosbuild_add_executable(rgbd_recording ros/src/rgbd_recording.cpp)
+
+
+
 
 #rosbuild_add_compile_flags(dirt_detection -D__LINUX__)
 
@@ -47,9 +54,21 @@ include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 
-rosbuild_add_executable(rgbd_recording ros/src/rgbd_recording.cpp)
-target_link_libraries(rgbd_recording ${PCL_LIBRARIES})
 
+rosbuild_add_executable(rgbd_recording ros/src/rgbd_recording.cpp)
+
+
+
+
+#target_link_libraries(rgbd_recording ${PCL_LIBRARIES})
+
+
+
+rosbuild_add_executable(hog_training ros/src/hog_training.cpp ros/src/training.cpp)
+
+rosbuild_add_executable(error_test ros/src/error_test.cpp ros/src/training.cpp)
+
+rosbuild_add_executable(hog_recognizer ros/src/hog_recognizer.cpp)
 
 
 #common commands for building c++ executables and libraries

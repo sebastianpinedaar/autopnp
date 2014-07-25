@@ -155,18 +155,69 @@ public:
 		cv::rectangle(color_image_copy, cv::Point(color_image.cols/2-half_side_length, color_image.rows/2-half_side_length),
 				cv::Point(color_image.cols/2+half_side_length, color_image.rows/2+half_side_length), CV_RGB(0, 255, 0), 3);
 		cv::imshow("color image", color_image_copy);
-		char key = cv::waitKey(20);
+			
+		char key= cv::waitKey(20);
+		//std::cout<<key;
+		//char key = 'c';
+		//std::cout<<"gut"<<std::endl;				
+
+		//std::cout<< "How do you want to name the image? (The name of the data cloud is the same as the one of the image"<<std::endl;
+
 
 		if (key=='c')
 		{
+			std::string path ( "Testing/");
+			std::string name;
+			std::string save_image;
+
+			std::cout<<std::endl<< "Do you want to save the image? (Y/N)"<<std::endl;
+			std::cin>> save_image;			
+			
+			if(save_image=="Y" || save_image=="YES" || save_image=="y" || save_image=="yes") {
+				std::cout<<std::endl<< "How do you want to name the image? (The name of the data cloud is the same as the one of the image.)"<<std::endl;
+				std::cin>> name;
+				cv::Mat ref=cv::imread(path+name+".jpg");
+				
+				while (ref.data!=NULL) {
+					ROS_INFO("Image name already exist. Please choose another one.");	
+					std::cin>> name;
+					ref=cv::imread(path+name+".jpg");	
+
+				}			
+
+
+			///Make sure that image name doesn't exist before
+			///	if(ref.data==NULL)
+			///	{
+			
+			///save image on disc
+				try {
+					imwrite(path+name+".jpg", color_image_copy );
+					ROS_INFO("Image captured");
+				}
+				catch (std::runtime_error& ex) {
+					fprintf(stderr, "Exception converting image to PNG format: %s\n", ex.what());
+					
+				}
+
+			///save point clud on disk
+				pcl::io::savePCDFileASCII(path+name+".pcd", point_cloud_src);
+
+				std::cerr << "Saved" << point_cloud_src.points.size () << "data points" << std::endl;
+			///	}
+			///	else
+			///		ROS_INFO("Image name already exist. Please choose another one.");
+
 			// todo: save point cloud and image to disc
 			// Bilder: cv::imwrite()
 			// Point cloud:  pcd writer oder so ähnlich   pcl::io::savePCDFile()
 			// path = "~/.ros/rgbd_recording/"
-			ROS_INFO("Image captured");
-		}
+				}
+			}
 		else if (key=='q')
 			ros::shutdown();
+
+		
 	}
 
 private:
